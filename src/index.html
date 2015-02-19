@@ -9,6 +9,15 @@
 <body>
 	<button onClick="initialize()">Iniciar!</button>
 	<button onClick="adiciona()">adiciona!</button>
+	<input type="text" id="endereco" />
+	<select name="avaliacao" id="avaliacao">
+		<option name="avaliacao" value="0">Muito Bom</option>	
+		<option name="avaliacao" value="1">Bom</option>	
+		<option name="avaliacao" value="2">Meh</option>	
+		<option name="avaliacao" value="3">Ruim</option>	
+		<option name="avaliacao" value="4">Péssimo</option>	
+	</select>
+	<button onclick="converte()">Converter</button>
 	<div id="map_canvas" style="width:600px; height:300px"></div>
 	<script src="js/maps.js" type="text/javascript"></script>
 </body>

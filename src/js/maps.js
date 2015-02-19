@@ -11,8 +11,9 @@ var opcoes = {
 };
 
 function initialize() {
+	 			geocoder = new google.maps.Geocoder();
         map = new google.maps.Map(divDoMapa, opcoes);
-        }
+}
 
 var imagens = {
 	muitoBom: 'http://i.imgur.com/bFnWq8k.png'
@@ -48,4 +49,31 @@ function adiciona(){
 		, imagem: imagens.muitoBom
 	}
 	criaMarcador(marcador, map);
+}
+
+function converteEndereco(endereco, avaliacao) {
+  geocoder.geocode( { 'address': endereco}, function(resultado, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      var marcador = {
+		      	latitude: resultado[0].geometry.location.k
+				, longitude: resultado[0].geometry.location.D	
+				, titulo: 'Novo marcador'
+				, imagem: avaliacao
+      }
+	     criaMarcador(marcador, map)
+    } else {
+      alert('Erro ao converter endereço: ' + status);
+    }
+  });
+}
+
+var imgArray = [imagens.muitoBom, imagens.bom, imagens.medio, imagens.ruim, imagens.pessimo]
+
+function converte(){
+	var endereco = document.getElementById('endereco').value;
+	var seletor = document.getElementById("avaliacao");
+	var avaliacao = seletor.options[seletor.selectedIndex].value;
+	var imagemMarcador = imgArray[avaliacao]
+	converteEndereco(endereco, imagemMarcador);
+	map.setZoom(14);
 }

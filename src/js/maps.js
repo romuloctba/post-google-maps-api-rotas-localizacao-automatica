@@ -7,12 +7,15 @@ var divDoMapa = document.getElementById("map_canvas")
 var opcoes = { 
   center: new google.maps.LatLng(inicial.latitude, inicial.longitude)
   , zoom: 10
-  , mapTypeId: google.maps.MapTypeId.ROADMAP
+  , mapTypeId: google.maps.MapTypeId.HYBRID
 };
 
 function initialize() {
 	 			geocoder = new google.maps.Geocoder();
         map = new google.maps.Map(divDoMapa, opcoes);
+        var autoCompleteInput = document.getElementById('endereco');
+				var autoCompleteOpcoes = {types: ['geocode']};
+				autocomplete = new google.maps.places.Autocomplete(autoCompleteInput,autoCompleteOpcoes);
 }
 
 var imagens = {
@@ -39,16 +42,7 @@ var criaMarcador = function(marcador, mapa) {
 	var novoMarcador = new google.maps.Marker(opcoes);
   marcadores.push(novoMarcador);
   map.setCenter(novoMarcador.position)
-}
-
-function adiciona(){
-	var marcador = {
-		latitude: -25.425777
-		, longitude: -49.3335829	
-		, titulo: 'Novo marcador'
-		, imagem: imagens.muitoBom
-	}
-	criaMarcador(marcador, map);
+  listaMarcadores();
 }
 
 function converteEndereco(endereco, avaliacao) {
@@ -69,11 +63,30 @@ function converteEndereco(endereco, avaliacao) {
 
 var imgArray = [imagens.muitoBom, imagens.bom, imagens.medio, imagens.ruim, imagens.pessimo]
 
-function converte(){
-	var endereco = document.getElementById('endereco').value;
+function novoLocal() {
+	var local = autocomplete.getPlace();
 	var seletor = document.getElementById("avaliacao");
 	var avaliacao = seletor.options[seletor.selectedIndex].value;
-	var imagemMarcador = imgArray[avaliacao]
-	converteEndereco(endereco, imagemMarcador);
-	map.setZoom(14);
+	var imagemMarcador = imgArray[avaliacao];
+	var marcador = {
+		latitude: local.geometry.location.k
+		, longitude: local.geometry.location.D	
+		, titulo: local.name
+		, imagem: imagemMarcador
+	}
+	criaMarcador(marcador, map);
+	map.setCenter(local.geometry.location)
+}
+
+
+function listaMarcadores(){
+	var qtdMarcadores = marcadores.length;
+	var listaDeMarcadores = document.getElementById('listaDeMarcadores');
+	listaDeMarcadores.innerHTML = "";
+	for (var i = 0; i < qtdMarcadores; i++) {
+	  var btn = document.createElement('button');
+	  btn.setAttribute("onclick","map.setCenter(marcadores["+i+"].position);map.setZoom(20);")
+	  btn.appendChild(document.createTextNode(marcadores[i].title));
+	  listaDeMarcadores.appendChild(btn);		
+	}
 }

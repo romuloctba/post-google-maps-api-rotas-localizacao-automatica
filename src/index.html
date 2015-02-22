@@ -4,11 +4,10 @@
 	<meta charset="UTF-8">
 	<title>Google Maps Básico</title>
 <script type="text/javascript"
-      src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+      src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places"></script>
 </head>
 <body>
 	<button onClick="initialize()">Iniciar!</button>
-	<button onClick="adiciona()">adiciona!</button>
 	<input type="text" id="endereco" />
 	<select name="avaliacao" id="avaliacao">
 		<option name="avaliacao" value="0">Muito Bom</option>	
@@ -17,8 +16,10 @@
 		<option name="avaliacao" value="3">Ruim</option>	
 		<option name="avaliacao" value="4">Péssimo</option>	
 	</select>
-	<button onclick="converte()">Converter</button>
+	<button onclick="novoLocal()">Avaliar</button>
 	<div id="map_canvas" style="width:600px; height:300px"></div>
+	<div id="listaDeMarcadores">
+	</div>
 	<script src="js/maps.js" type="text/javascript"></script>
 </body>
 </html>
